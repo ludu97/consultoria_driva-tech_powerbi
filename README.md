@@ -13,14 +13,16 @@ O cliente forneceu dados das vendas das lojas e dados demográficos dos consumid
 1. Examinar os dados para identificar padrões de vendas e diferenças regionais;<br>
 2. Aplicar técnicas básicas de segmentação para identificar diferentes perfis de consumidores. Analisar suas preferências de compra para entender quais produtos ou promoções são mais eficazes para cada segmento;<br>
 3. Elaborar recomendações práticas sobre como ajustar a distribuição de produtos e as estratégias de marketing para melhor atender aos diferentes segmentos de clientes, baseando-se nos insights extraídos das análises anteriores.<br>
-
+<br>
 ## Metodologia
 ### Origem dos Dados: 
 Fictícios. Gerados de forma randômica, porém seguindo modelo de consultoria para aplicação de conceitos e estudo.<br>
 ### Transformação e Carregamento: 
 Carregamento das planilhas normalizadas em Power BI e Transformação em Power Query para limpeza, criação de novas colunas, medidas e criação da tabela calendário. Abaixo compartilho algumas das fórmulas DAX que utilizei e o seu objetivo:<br>
 <br>
-#### Criação da Tabela Calendário:  
+### Algumas Fórmulas utilizadas:
+
+#### 1. Criação da Tabela Calendário:  
 Esta fórmula DAX para a criação da tabela calendário é uma melhor opção do que o Auto Date/Time do Power BI, pois prioriza a performance e a capacidade de análise avançada (Time Intelligence) no projeto, evitando o inchaço (model bloat) que a fórmula automática Auto Date/Time geraria ao criar diversas tabelas ocultas de data para cada coluna de data no projeto.
 ```
 DIM_Calendario =
@@ -38,7 +40,9 @@ O principal objetivo é permitir realizar Análises Temporais Avançadas (Time I
 - Agrupamento: Permite agrupar vendas por Mês, Dia da Semana, Trimestre, ou Dia Útil/Fim de Semana.<br>
 - Comparação: É o motor para métricas complexas como "Vendas Mês Anterior" ou "Vendas Ano Passado", que exigem uma sequência de datas ininterrupta.<br>
 - Filtro: Permite filtrar todas as suas métricas (Vendas, Ticket Médio, etc.) usando atributos de tempo (como "Mês", "Dia da Semana") em vez de usar apenas a data bruta.<br>
-#### Agregação por Cliente (Proxy LTV)
+<br>
+<br>
+#### 2. Agregação por Cliente (Proxy LTV)
 Esta fórmula é uma Coluna Calculada na tabela DIM_Clientes e é a base para a segmentação de clientes por Lifetime Value (LTV). Ela Resolve o problema de agregar dados transacionais (muitas linhas na FATO) em uma tabela de dimensão (uma linha por cliente), usando a técnica de Context Transition (CALCULATE) e ignora/aplica filtros (FILTER(ALL())) para garantir que o gasto total de cada cliente seja preciso.
 ```
 VALOR_GASTO_CLIENTE =
@@ -52,8 +56,9 @@ CALCULATE(
 ```
 **Objetivo na Análise**:<br>
 Esta fórmula permite medir o valor monetário total que cada cliente contribuiu para o negócio, desde o início dos dados, sem interferências de filtros gerais.<br>
-
-#### Benchmark Dinâmico (Média Geral Ajustável)
+<br>
+<br>
+#### 3. Benchmark Dinâmico (Média Geral Ajustável)
 Esta métrica é essencial para criar a linha de referência nos gráficos de Faturamento por Filial e Ticket Médio. Ela calcula a média da rede, mas tem a inteligência de se ajustar a filtros de data ou cliente (tornando-a dinâmica).<br>
 ```
 MEDIA_FATURAMENTO_GERAL_FILIAL_DINAMICA =
@@ -64,23 +69,28 @@ RETURN
 ```
 **Objetivo na Análise**:<br>
 Esta métrica permite avaliar o desempenho das filiais em relação à média de faturamento que cada filial deveria atingir no período e contexto filtrado (se o usuário filtrou por "Novembro", a média de novembro é calculada).<br>
+<br>
+<br>
 ### Modelagem de Dados: 
 Star Schema em Power BI, a partir de 5 planilhas de Excel normalizadas<br>
 <img width="1118" height="661" alt="image" src="https://github.com/user-attachments/assets/5120c036-1d5c-4067-ad7f-988b4e004dae" />
 <br>
 ### Técnica de Análise:
-Criação de dashboard em Power BI utilizando fórmulas DAX avançadas e Análise Exploratória<br>
+Análise Exploratória em Dashboard no Power BI<br>
 <br>
 <br>
 <img width="1246" height="696" alt="image" src="https://github.com/user-attachments/assets/61b1ba65-468c-428e-bb0d-09f0ebad981c" />
-<br>
-<br>
+
+---
+
 <img width="1250" height="701" alt="image" src="https://github.com/user-attachments/assets/1d72a894-2232-4a6a-baef-f432349e03f7" />
-<br>
-<br>
+
+---
+
 <img width="1246" height="698" alt="image" src="https://github.com/user-attachments/assets/fdf6bc16-becb-4e46-ae9a-bb3794494aac" />
-<br>
-<br>
+
+---
+
 ### Dicas de Ferramenta:
 <img width="360" height="275" alt="image" src="https://github.com/user-attachments/assets/be3a4a76-2501-4776-80b1-b9a425d243b3" />
 <img width="364" height="275" alt="image" src="https://github.com/user-attachments/assets/c6ab3db1-4ada-49dc-b673-78e7f5dc902a" />
@@ -91,9 +101,9 @@ Criação de dashboard em Power BI utilizando fórmulas DAX avançadas e Anális
 ## Análises possíveis caso eu tivesse mais tempo:
 <br>
 ### 1. Segmentação RFM (Recência, Frequência e Valor Monetário):
-**1.1. Monetário (M)**: Permitiria uma classificação mais precisa de LTV (Lifetime Value);<br>
-**1.2. Frequência (F)**: Ajudaria a distinguir o "campeão" (muitas compras, alto gasto) do "cliente premium" (poucas compras, altíssimo gasto);<br>
-**1.3. Recência (R)**: Nesse caso não seria útil, pois temos dados transacionais somente de um período de 3 meses.<br>
+**1.1. Monetário   (M)**: Permitiria uma classificação mais precisa de LTV (Lifetime Value);<br>
+**1.2. Frequência  (F)**: Ajudaria a distinguir o "campeão" (muitas compras, alto gasto) do "cliente premium" (poucas compras, altíssimo gasto);<br>
+**1.3. Recência    (R)**: Nesse caso não seria útil, pois temos dados transacionais somente de um período de 3 meses.<br>
 <br>
 
 ### 2. Análises Estatísticas:
