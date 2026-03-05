@@ -83,22 +83,20 @@ Star Schema em Power BI, a partir de 5 planilhas de Excel normalizadas<br>
 <br>
 
 # Páginas do Dashboard Construído:
-<img width="1246" height="696" alt="image" src="https://github.com/user-attachments/assets/61b1ba65-468c-428e-bb0d-09f0ebad981c" />
 
 ---
 
-<img width="1250" height="701" alt="image" src="https://github.com/user-attachments/assets/1d72a894-2232-4a6a-baef-f432349e03f7" />
+
 
 ---
 
-<img width="1246" height="698" alt="image" src="https://github.com/user-attachments/assets/fdf6bc16-becb-4e46-ae9a-bb3794494aac" />
+
 
 ---
 
 ## Dicas de Ferramenta:
-<img width="360" height="275" alt="image" src="https://github.com/user-attachments/assets/be3a4a76-2501-4776-80b1-b9a425d243b3" />
-<img width="364" height="275" alt="image" src="https://github.com/user-attachments/assets/c6ab3db1-4ada-49dc-b673-78e7f5dc902a" />
-<br>
+
+
 
 # Técnica de Análise:
 Análise Exploratória no Dashboard em Power BI, utilizando recursos estatísticos para observar padrões e tendências para geração de insights<br>
