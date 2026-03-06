@@ -1,15 +1,22 @@
 # consultoria_driva-tech_powerbi (Em Construção)
-Consultoria realizada para uma empresa fictícia varejista de moda com 5 lojas físicas em Curitiba.<br>
-<br>
-**Objetivo**: Encontrar padrões e tendências e sugerir estratégias para otimizar a distribuição de produtos e promoções nos PDV's, visando aumento de vendas e melhoria na satisfação do cliente.<br>
-O cliente forneceu dados das vendas das lojas e dados demográficos dos consumidores.
-
-# Desafio
-Um varejista de moda, cliente fictício da DrivaTech, busca entender melhor o desempenho de suas lojas físicas para otimizar estratégias de distribuição de produtos e promoções, visando aumento das vendas e melhoria na satisfação do cliente. O cliente forneceu dados das vendas das lojas e dados demográficos dos consumidores.<br>
 <br>
 
-## Esquema de Dados das Tabelas Originais:
-<img width="1074" height="431" alt="image" src="https://github.com/user-attachments/assets/c5a95d55-59ca-4095-9d50-0f7f7ccb9f46" />
+# Sumário
+1. Contexto
+2. Preview dashboard
+3. Origem dos dados
+4. ETL
+5. Criação da tabela Calendário
+6. Relacionamentos (Star Schema)
+7. Hipóteses
+8. Clusterização com Machine Learning (K-Means)
+9. Páginas do Dashboard + Explicação dos gráficos
+10. Algumas Fórmulas utilizadas nas medidas criadas
+11. Validação de hipóteses
+12. Insights e Recomendações
+
+# 1. Contexto
+A varejista de moda, Arfex, busca entender melhor o desempenho de suas lojas físicas para otimizar estratégias de distribuição de produtos e promoções, visando aumento das vendas e melhoria na satisfação do cliente. O cliente forneceu dados das vendas das lojas e dados demográficos dos consumidores.<br>
 <br>
 
 **Objetivo**:
@@ -17,36 +24,60 @@ Um varejista de moda, cliente fictício da DrivaTech, busca entender melhor o de
 2. Aplicar técnicas básicas de segmentação para identificar diferentes perfis de consumidores. Analisar suas preferências de compra para entender quais produtos ou promoções são mais eficazes para cada segmento;<br>
 3. Elaborar recomendações práticas sobre como ajustar a distribuição de produtos e as estratégias de marketing para melhor atender aos diferentes segmentos de clientes, baseando-se nos insights extraídos das análises anteriores.<br>
 
-# Metodologia
+# 2. Preview Dashboard
+<>imgs
 
-### 1. Origem dos Dados: 
-Fictícios. Gerados de forma randômica, porém seguindo modelo de consultoria para aplicação de conceitos e estudo.<br>
-
-### 2. Transformação e Carregamento: 
+# 3. ETL
 Carregamento das planilhas normalizadas em Power BI e Transformação em Power Query para limpeza, criação de novas colunas, medidas e criação da tabela calendário. Abaixo compartilho algumas das fórmulas DAX que utilizei e o seu objetivo:<br>
 
-### 3. Algumas Fórmulas utilizadas:
+## Origem dos Dados: 
+Fictícios. Gerados usando IA, porém seguindo modelo de consultoria para aplicação de conceitos e estudo.<br>
 
-#### A. Criação da Tabela Calendário:  
+## Esquema de Dados das Tabelas Originais:
+<img width="1074" height="431" alt="image" src="https://github.com/user-attachments/assets/c5a95d55-59ca-4095-9d50-0f7f7ccb9f46" />
+<br>
+
+# 4. Criação da tabela Calendário
 Esta fórmula DAX para a criação da tabela calendário é uma melhor opção do que o Auto Date/Time do Power BI, pois prioriza a performance e a capacidade de análise avançada (Time Intelligence) no projeto, evitando o inchaço (model bloat) que a fórmula automática Auto Date/Time geraria ao criar diversas tabelas ocultas de data para cada coluna de data no projeto.
-```
-DIM_Calendario =
+
+DIM_Calendario = 
 ADDCOLUMNS (
-    CALENDAR (MIN(FATO_Vendas[DATA_VENDA]), MAX(FATO_Vendas[DATA_VENDA])),
+    CALENDAR (MIN(FATO_Vendas[VENDAS.DATA_VENDA]), MAX(FATO_Vendas[VENDAS.DATA_VENDA])),
     "Ano", YEAR([Date]),
-    "Mês", FORMAT([Date], "MMMM"),
-    "Mês/Ano", FORMAT([Date], "YYYY-MM"),
-    "Dia da Semana", FORMAT([Date], "dddd"),
-    "Dia_da_Semana_Num", WEEKDAY([Date], 2) // 1=Segunda
+    "Trimestre Num", QUARTER([Date]),
+    "Trimestre", "T" & QUARTER([Date]),
+    "Mês Nome", FORMAT([Date], "MMMM"),
+    "Mês Num/Ano", FORMAT([Date], "YYYY-MM"), // Importante para ordenação
+    "Dia da Semana Nome", FORMAT([Date], "dddd"),
+    "Dia da Semana Num", WEEKDAY([Date], 2) // 1=Segunda, 7=Domingo
 )
-```
+
 **Objetivo na Análise**:<br>
 O principal objetivo é permitir realizar Análises Temporais Avançadas (Time Intelligence) de forma correta e flexível, pois possibilita:<br>
 - Agrupamento: Permite agrupar vendas por Mês, Dia da Semana, Trimestre, ou Dia Útil/Fim de Semana.<br>
 - Comparação: É o motor para métricas complexas como "Vendas Mês Anterior" ou "Vendas Ano Passado", que exigem uma sequência de datas ininterrupta.<br>
 - Filtro: Permite filtrar todas as suas métricas (Vendas, Ticket Médio, etc.) usando atributos de tempo (como "Mês", "Dia da Semana") em vez de usar apenas a data bruta.<br>
-<br>
 
+# 5. Relacionamentos (Star Schema)
+
+# 6. Clusterização com Machine Learning (K-Means)
+
+# 7. Hipóteses
+1. O ticket médio dos clusters é expressivamente diferente, e clientes ouro gastam mais que os outros por pedido.
+2. Cada cluster compra produtos e combos diferentes, portanto, a estratégia de mix e marketing deve ser diferente para cada cluster
+3. Clientes Ouro compram mais vezes que clientes Prata e Bronze
+4. Clientes Bronze são clientes inativos (com mais de 30 dias sem comprar em média)
+5. Clientes Bronze compram mais produtos em promoção do que os outros clusters
+6. Cada cluster compra essencialmente o mesmo mix de produtos independente da filial
+7. Algumas filiais possuem mais clientes ouro do que outros, podendo se beneficiar de ter produtos mais voltados para este público
+8. Os melhores dias de vendas para todas as filiais são: Sex, Sáb e Domingo, e estes são os dias mais importantes de se ter mais funcionários e estoque garantido em loja
+9. As filiais que faturam mais, vendem maior quantidade e não produtos mais caros, portanto, o foco deve ser recorrência e fidelidade
+10. Não há variação expressiva entre a origem dos clientes entre as filiais, portanto, a empresa não precisa ter estratégias diferentes com relação à isso
+11. *****NÃO TESTADA***** O mix de produtos comprados por clientes de diferentes origens é muito parecido, portanto, é indiferente para estratégia de mix do PDV
+
+# 8. Páginas do Dashboard + Explicação dos gráficos
+
+# 9. Algumas Fórmulas utilizadas nas medidas criadas
 #### B. Agregação por Cliente (Proxy LTV)
 Esta fórmula é uma Coluna Calculada na tabela DIM_Clientes e é a base para a segmentação de clientes por Lifetime Value (LTV). Ela Resolve o problema de agregar dados transacionais (muitas linhas na FATO) em uma tabela de dimensão (uma linha por cliente), usando a técnica de Context Transition (CALCULATE) e ignora/aplica filtros (FILTER(ALL())) para garantir que o gasto total de cada cliente seja preciso.
 ```
@@ -75,6 +106,13 @@ RETURN
 **Objetivo na Análise**:<br>
 Esta métrica permite avaliar o desempenho das filiais em relação à média de faturamento que cada filial deveria atingir no período e contexto filtrado (se o usuário filtrou por "Novembro", a média de novembro é calculada).<br>
 <br>
+
+# 10. Validação de hipóteses
+
+# 11. Insights e Recomendações
+
+
+
 
 # Modelagem de Dados: 
 Star Schema em Power BI, a partir de 5 planilhas de Excel normalizadas<br>
