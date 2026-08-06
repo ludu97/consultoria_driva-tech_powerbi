@@ -25,7 +25,8 @@ A varejista de moda, Arfex, busca entender melhor o desempenho de suas lojas fí
 3. Elaborar recomendações práticas sobre como ajustar a distribuição de produtos e as estratégias de marketing para melhor atender aos diferentes segmentos de clientes, baseando-se nos insights extraídos das análises anteriores.<br>
 
 # 2. Preview Dashboard
-<>imgs
+<img width="1245" height="694" alt="image" src="https://github.com/user-attachments/assets/6b232908-9a7a-47a5-b52e-c6a80475e1f5" />
+
 
 # 3. ETL
 Carregamento das planilhas normalizadas em Power BI e Transformação em Power Query para limpeza, criação de novas colunas, medidas e criação da tabela calendário. Abaixo compartilho algumas das fórmulas DAX que utilizei e o seu objetivo:<br>
@@ -59,9 +60,51 @@ O principal objetivo é permitir realizar Análises Temporais Avançadas (Time I
 - Filtro: Permite filtrar todas as suas métricas (Vendas, Ticket Médio, etc.) usando atributos de tempo (como "Mês", "Dia da Semana") em vez de usar apenas a data bruta.<br>
 
 # 5. Relacionamentos (Star Schema)
+<img width="1129" height="720" alt="image" src="https://github.com/user-attachments/assets/f3026842-e92a-457e-82d9-cdb4787b5f71" />
 
 # 6. Clusterização com Machine Learning (K-Means)
+import pandas as pd
 
+try:
+    df = dataset.copy()
+
+    # 1. LIMPEZA DE CABEÇALHOS (Remove espaços extras e coloca tudo em maiúsculo)
+    # Isso resolve se estiver " NOME_FILIAL" ou "nome_filial"
+    df.columns = [col.strip().upper() for col in df.columns]
+
+    # Verifica se a coluna de filial existe (ajuste 'NOME_FILIAL' se o seu nome for diferente, ex: 'LOJA')
+    col_filial = 'NOME_FILIAL' 
+    
+    if col_filial not in df.columns:
+        # Se não achar, tenta procurar uma coluna que contenha "FILIAL" no nome
+        possiveis = [c for c in df.columns if 'FILIAL' in c]
+        if possiveis:
+            col_filial = possiveis[0] # Pega a primeira que achar
+        else:
+            raise KeyError(f"Coluna de Filial não encontrada. Colunas disponíveis: {list(df.columns)}")
+
+    # 2. AUTO-CRUZAMENTO
+    # Usa a variável col_filial que encontramos acima
+    df_merge = pd.merge(df, df, on=['ID_VENDA', 'PERFIL_CLIENTE', col_filial])
+
+    # 3. FILTRO E RANKING
+    df_pares = df_merge[df_merge['NOME_PRODUTO_x'] < df_merge['NOME_PRODUTO_y']]
+
+    ranking = df_pares.groupby(['PERFIL_CLIENTE', col_filial, 'NOME_PRODUTO_x', 'NOME_PRODUTO_y']).size().reset_index(name='Qtd_Vendas_Juntas')
+
+    ranking.rename(columns={
+        'NOME_PRODUTO_x': 'Produto_A',
+        'NOME_PRODUTO_y': 'Produto_B'
+    }, inplace=True)
+
+    ranking.sort_values('Qtd_Vendas_Juntas', ascending=False, inplace=True)
+
+    df_final = ranking
+
+except Exception as e:
+    # Isso cria uma tabela de erro legível no Power BI se algo der errado
+    df_final = pd.DataFrame({'Erro': [str(e)]})
+    
 # 7. Hipóteses
 1. O ticket médio dos clusters é expressivamente diferente, e clientes ouro gastam mais que os outros por pedido.
 2. Cada cluster compra produtos e combos diferentes, portanto, a estratégia de mix e marketing deve ser diferente para cada cluster
@@ -75,7 +118,11 @@ O principal objetivo é permitir realizar Análises Temporais Avançadas (Time I
 10. Não há variação expressiva entre a origem dos clientes entre as filiais, portanto, a empresa não precisa ter estratégias diferentes com relação à isso
 11. *****NÃO TESTADA***** O mix de produtos comprados por clientes de diferentes origens é muito parecido, portanto, é indiferente para estratégia de mix do PDV
 
-# 8. Páginas do Dashboard + Explicação dos gráficos
+# 8. Páginas do Dashboard + Explicação dos gráficos (em construção)
+<img width="1245" height="692" alt="image" src="https://github.com/user-attachments/assets/8d97cfb7-805f-4946-bf72-6d6927b7ecb5" />
+<img width="1250" height="697" alt="image" src="https://github.com/user-attachments/assets/8d34858e-b2ad-44dc-b789-4ddaa1951a0d" />
+<img width="1263" height="703" alt="image" src="https://github.com/user-attachments/assets/f29ea16b-e47c-467b-9f5a-2c1f11c6b20b" />
+<img width="1268" height="703" alt="image" src="https://github.com/user-attachments/assets/458d87db-76dc-4dfb-a7f1-55f1e9bb15a8" />
 
 # 9. Algumas Fórmulas utilizadas nas medidas criadas
 #### B. Agregação por Cliente (Proxy LTV)
@@ -107,20 +154,11 @@ RETURN
 Esta métrica permite avaliar o desempenho das filiais em relação à média de faturamento que cada filial deveria atingir no período e contexto filtrado (se o usuário filtrou por "Novembro", a média de novembro é calculada).<br>
 <br>
 
-# 10. Validação de hipóteses
+# 10. Validação de hipóteses (em construção)
 
-# 11. Insights e Recomendações
+# 11. Insights e Recomendações (em construção)
 
-
-
-
-# Modelagem de Dados: 
-Star Schema em Power BI, a partir de 5 planilhas de Excel normalizadas<br>
-<img width="1118" height="661" alt="image" src="https://github.com/user-attachments/assets/5120c036-1d5c-4067-ad7f-988b4e004dae" />
-<br>
-<br>
-
-# Páginas do Dashboard Construído:
+# Trecho do projeto antigo (em construção, pode ignorar daqui pra baixo)
 
 ---
 
