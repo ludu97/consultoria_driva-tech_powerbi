@@ -29,7 +29,7 @@ A varejista de moda, Arfex, busca entender melhor o desempenho de suas lojas fí
 
 
 # 3. ETL
-Carregamento das planilhas normalizadas em Power BI e Transformação em Power Query para limpeza, criação de novas colunas, medidas e criação da tabela calendário. Abaixo compartilho algumas das fórmulas DAX que utilizei e o seu objetivo:<br>
+Carregamento das planilhas normalizadas em Power BI e Transformação em Power Query para limpeza, criação de novas colunas, medidas e criação da tabela calendário. Na sessão 9 compartilho algumas das fórmulas DAX que utilizei o objetivo:<br>
 
 ## Origem dos Dados: 
 Fictícios. Gerados usando IA, porém seguindo modelo de consultoria para aplicação de conceitos e estudo.<br>
@@ -119,10 +119,10 @@ except Exception as e:
 11. *****NÃO TESTADA***** O mix de produtos comprados por clientes de diferentes origens é muito parecido, portanto, é indiferente para estratégia de mix do PDV
 
 # 8. Páginas do Dashboard + Explicação dos gráficos (em construção)
-<img width="1245" height="692" alt="image" src="https://github.com/user-attachments/assets/8d97cfb7-805f-4946-bf72-6d6927b7ecb5" />
-<img width="1250" height="697" alt="image" src="https://github.com/user-attachments/assets/8d34858e-b2ad-44dc-b789-4ddaa1951a0d" />
-<img width="1263" height="703" alt="image" src="https://github.com/user-attachments/assets/f29ea16b-e47c-467b-9f5a-2c1f11c6b20b" />
-<img width="1268" height="703" alt="image" src="https://github.com/user-attachments/assets/458d87db-76dc-4dfb-a7f1-55f1e9bb15a8" />
+<img width="1245" height="692" alt="image" src="https://github.com/user-attachments/assets/8d97cfb7-805f-4946-bf72-6d6927b7ecb5" /><br>
+<img width="1250" height="697" alt="image" src="https://github.com/user-attachments/assets/8d34858e-b2ad-44dc-b789-4ddaa1951a0d" /><br>
+<img width="1263" height="703" alt="image" src="https://github.com/user-attachments/assets/f29ea16b-e47c-467b-9f5a-2c1f11c6b20b" /><br>
+<img width="1268" height="703" alt="image" src="https://github.com/user-attachments/assets/458d87db-76dc-4dfb-a7f1-55f1e9bb15a8" /><br>
 
 # 9. Algumas Fórmulas utilizadas nas medidas criadas
 #### B. Agregação por Cliente (Proxy LTV)
