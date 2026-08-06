@@ -120,9 +120,17 @@ except Exception as e:
 
 # 8. Páginas do Dashboard + Explicação dos gráficos (em construção)
 <img width="1245" height="692" alt="image" src="https://github.com/user-attachments/assets/8d97cfb7-805f-4946-bf72-6d6927b7ecb5" /><br>
+<br>
+<br>
 <img width="1250" height="697" alt="image" src="https://github.com/user-attachments/assets/8d34858e-b2ad-44dc-b789-4ddaa1951a0d" /><br>
+<br>
+<br>
 <img width="1263" height="703" alt="image" src="https://github.com/user-attachments/assets/f29ea16b-e47c-467b-9f5a-2c1f11c6b20b" /><br>
+<br>
+<br>
 <img width="1268" height="703" alt="image" src="https://github.com/user-attachments/assets/458d87db-76dc-4dfb-a7f1-55f1e9bb15a8" /><br>
+<br>
+<br>
 
 # 9. Algumas Fórmulas utilizadas nas medidas criadas
 #### B. Agregação por Cliente (Proxy LTV)
