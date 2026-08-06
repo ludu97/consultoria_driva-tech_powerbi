@@ -59,7 +59,7 @@ O principal objetivo é permitir realizar Análises Temporais Avançadas (Time I
 - Comparação: É o motor para métricas complexas como "Vendas Mês Anterior" ou "Vendas Ano Passado", que exigem uma sequência de datas ininterrupta.<br>
 - Filtro: Permite filtrar todas as suas métricas (Vendas, Ticket Médio, etc.) usando atributos de tempo (como "Mês", "Dia da Semana") em vez de usar apenas a data bruta.<br>
 
-# 5. Relacionamentos (Star Schema)
+# 5. Relacionamentos
 <img width="1129" height="720" alt="image" src="https://github.com/user-attachments/assets/f3026842-e92a-457e-82d9-cdb4787b5f71" />
 
 # 6. Clusterização com Machine Learning (K-Means)
